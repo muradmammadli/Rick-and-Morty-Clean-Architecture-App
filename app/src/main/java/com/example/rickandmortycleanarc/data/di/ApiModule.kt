@@ -1,6 +1,6 @@
 package com.example.rickandmortycleanarc.data.di
 
-import com.example.rickandmortycleanarc.data.Common.Constants.BASE_URL
+import com.example.rickandmortycleanarc.data.common.Constants.BASE_URL
 import com.example.rickandmortycleanarc.data.api.CharacterApi
 import dagger.Module
 import dagger.Provides

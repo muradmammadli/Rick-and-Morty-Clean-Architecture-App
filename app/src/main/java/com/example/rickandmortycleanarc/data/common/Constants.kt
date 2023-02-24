@@ -1,4 +1,4 @@
-package com.example.rickandmortycleanarc.data.Common
+package com.example.rickandmortycleanarc.data.common
 
 object Constants {
 

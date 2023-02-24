@@ -1,10 +1,14 @@
 package com.example.rickandmortycleanarc.data.repository
 
 import com.example.rickandmortycleanarc.data.model.CharacterList
+import com.example.rickandmortycleanarc.data.repository.dataSource.CharactersRemoteDataSource
 import com.example.rickandmortycleanarc.domain.repository.CharacterRepository
+import javax.inject.Inject
 
-class CharacterRepositoryImpl:CharacterRepository {
+class CharacterRepositoryImpl @Inject constructor(
+    private val dataSource: CharactersRemoteDataSource
+) :CharacterRepository {
     override suspend fun getCharacters(): CharacterList {
-        TODO("Not yet implemented")
+        return  dataSource.getCharacters()
     }
 }
