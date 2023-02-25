@@ -1,15 +1,21 @@
 package com.example.rickandmortycleanarc.presentation.adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Adapter
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.rickandmortycleanarc.R
 import com.example.rickandmortycleanarc.data.model.CharacterList
 import com.example.rickandmortycleanarc.data.model.Result
 import com.example.rickandmortycleanarc.databinding.CharacterRowBinding
 
-class CharactersAdapter() :
+class CharactersAdapter(
+    val callback:AdapterCallbacks
+) :
     RecyclerView.Adapter<CharactersAdapter.CharacterViewHolder>() {
     private var characterList: List<Result>? = null
 
@@ -32,12 +38,21 @@ class CharactersAdapter() :
         if (character != null){
             holder.binding.characterName.text = character.name
             Glide.with(holder.itemView.context).load(character.image).into(holder.binding.characterImg)
+            holder.itemView.setOnClickListener {
+                callback.handleCharacterId(character.id)
+//                it.findNavController().navigate(R.id.action_mainFragment_to_infoFragment)
+            }
         }
 
     }
 
     override fun getItemCount(): Int {
         return characterList!!.size
+    }
+
+
+    interface AdapterCallbacks {
+        fun handleCharacterId(characterId:Int)
     }
 
 }

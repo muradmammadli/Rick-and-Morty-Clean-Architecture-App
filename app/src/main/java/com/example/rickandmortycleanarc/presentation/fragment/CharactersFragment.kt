@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rickandmortycleanarc.R
 import com.example.rickandmortycleanarc.databinding.FragmentCharacterBinding
@@ -17,11 +18,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class CharactersFragment : Fragment() {
+class CharactersFragment : Fragment(),CharactersAdapter.AdapterCallbacks {
     private lateinit var characterViewModel: CharacterViewModel
     private lateinit var binding: FragmentCharacterBinding
 
-    @Inject
     lateinit var charactersAdapter: CharactersAdapter
 
     override fun onCreateView(
@@ -35,15 +35,20 @@ class CharactersFragment : Fragment() {
             initRecyclerView()
             charactersAdapter.addCharacterList(it)
         }
-
         return binding.root
     }
 
     private fun initRecyclerView() {
+        charactersAdapter = CharactersAdapter(this)
         binding.characterRv.apply {
             adapter = charactersAdapter
             layoutManager = LinearLayoutManager(activity)
         }
     }
 
+    override fun handleCharacterId(characterId: Int) {
+        findNavController().navigate(R.id.action_mainFragment_to_infoFragment,Bundle().apply {
+            putInt("characterId",characterId)
+        })
+    }
 }
