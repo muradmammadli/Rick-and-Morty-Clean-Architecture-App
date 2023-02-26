@@ -1,6 +1,7 @@
 package com.example.rickandmortycleanarc.data.di
 
 import com.example.rickandmortycleanarc.data.repository.CharacterRepositoryImpl
+import com.example.rickandmortycleanarc.data.repository.dataSource.CharactersLocalDataSource
 import com.example.rickandmortycleanarc.data.repository.dataSource.CharactersRemoteDataSource
 import com.example.rickandmortycleanarc.domain.repository.CharacterRepository
 import dagger.Module
@@ -15,8 +16,8 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideRepository(dataSource: CharactersRemoteDataSource):CharacterRepository{
-        return CharacterRepositoryImpl(dataSource)
+    fun provideRepository(remoteDataSource: CharactersRemoteDataSource,localDataSource: CharactersLocalDataSource):CharacterRepository{
+        return CharacterRepositoryImpl(remoteDataSource, localDataSource)
     }
 
 

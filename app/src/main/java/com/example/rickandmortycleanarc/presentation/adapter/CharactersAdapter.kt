@@ -39,17 +39,15 @@ class CharactersAdapter(
             holder.binding.characterName.text = character.name
             Glide.with(holder.itemView.context).load(character.image).into(holder.binding.characterImg)
             holder.itemView.setOnClickListener {
-                callback.handleCharacterId(character.id)
-//                it.findNavController().navigate(R.id.action_mainFragment_to_infoFragment)
+                character.id?.let { it1 -> callback.handleCharacterId(it1) }
             }
         }
 
     }
 
     override fun getItemCount(): Int {
-        return characterList!!.size
+        return characterList?.size ?: 0
     }
-
 
     interface AdapterCallbacks {
         fun handleCharacterId(characterId:Int)

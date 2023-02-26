@@ -30,7 +30,7 @@ class InfoFragment : Fragment() {
             binding.characterName.text = it.name
             binding.characterSpecies.text = it.species
             binding.characterGender.text = it.gender
-            binding.characterOriginName.text = it.origin.name
+            binding.characterOriginName.text = it.origin?.name ?: "null"
         }
         return binding.root
     }

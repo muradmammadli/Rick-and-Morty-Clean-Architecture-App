@@ -17,4 +17,9 @@ class CharactersRemoteDataSourceImpl @Inject constructor(
         return characterApi.getCharacterInfo(characterId).body()!!
     }
 
+    override suspend fun getSearchedCharacters(characterName: String?): CharacterList? {
+
+        return characterApi.getSearchedCharacters(characterName).body()
+    }
+
 }
