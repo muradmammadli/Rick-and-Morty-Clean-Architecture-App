@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Adapter
+import android.widget.Button
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -14,12 +15,12 @@ import com.example.rickandmortycleanarc.data.model.Result
 import com.example.rickandmortycleanarc.databinding.CharacterRowBinding
 
 class CharactersAdapter(
-    val callback:AdapterCallbacks
+    val callback: AdapterCallbacks
 ) :
     RecyclerView.Adapter<CharactersAdapter.CharacterViewHolder>() {
     private var characterList: List<Result>? = null
 
-    fun addCharacterList(characterList: List<Result>){
+    fun addCharacterList(characterList: List<Result>) {
         this.characterList = characterList
         notifyDataSetChanged()
     }
@@ -35,12 +36,18 @@ class CharactersAdapter(
 
     override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) {
         val character = characterList?.get(position)
-        if (character != null){
+        if (character != null) {
             holder.binding.characterName.text = character.name
-            Glide.with(holder.itemView.context).load(character.image).into(holder.binding.characterImg)
+            Glide.with(holder.itemView.context).load(character.image)
+                .into(holder.binding.characterImg)
             holder.itemView.setOnClickListener {
                 character.id?.let { it1 -> callback.handleCharacterId(it1) }
             }
+
+            holder.binding.saveBtn.setOnClickListener { callback.onClickSaveButton(character)}
+            holder.binding.deleteBtn.setOnClickListener { callback.onClickDeleteButton(character)}
+            callback.visibilitySaveButton(holder.binding.saveBtn)
+            callback.visibilityDeleteButton(holder.binding.deleteBtn)
         }
 
     }
@@ -50,7 +57,11 @@ class CharactersAdapter(
     }
 
     interface AdapterCallbacks {
-        fun handleCharacterId(characterId:Int)
+        fun handleCharacterId(characterId: Int)
+        fun onClickSaveButton(result: Result)
+        fun onClickDeleteButton(result: Result)
+        fun visibilitySaveButton(saveButton: Button)
+        fun visibilityDeleteButton(deleteButton: Button)
     }
 
 }

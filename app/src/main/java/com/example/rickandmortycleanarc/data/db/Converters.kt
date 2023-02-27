@@ -2,6 +2,7 @@ package com.example.rickandmortycleanarc.data.db
 
 import androidx.room.TypeConverter
 import com.example.rickandmortycleanarc.data.model.Origin
+import com.example.rickandmortycleanarc.data.model.Result
 
 class Converters {
 
@@ -14,6 +15,7 @@ class Converters {
     fun toOrigin(name:String):Origin{
         return Origin(name,name)
     }
+
 
 
 }

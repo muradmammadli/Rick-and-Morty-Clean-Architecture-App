@@ -12,6 +12,6 @@ import com.example.rickandmortycleanarc.data.model.Result
     exportSchema = false
 )
 @TypeConverters(Converters::class)
-abstract class CharacterDatabase: RoomDatabase() {
-    abstract fun getCharacterDao():CharacterDAO
+abstract class CharacterDatabase : RoomDatabase() {
+    abstract fun getCharacterDao(): CharacterDAO
 }

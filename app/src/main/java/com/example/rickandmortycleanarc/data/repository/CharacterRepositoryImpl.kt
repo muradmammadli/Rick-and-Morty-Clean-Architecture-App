@@ -5,6 +5,7 @@ import com.example.rickandmortycleanarc.data.model.Result
 import com.example.rickandmortycleanarc.data.repository.dataSource.CharactersLocalDataSource
 import com.example.rickandmortycleanarc.data.repository.dataSource.CharactersRemoteDataSource
 import com.example.rickandmortycleanarc.domain.repository.CharacterRepository
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class CharacterRepositoryImpl @Inject constructor(
@@ -26,6 +27,14 @@ class CharacterRepositoryImpl @Inject constructor(
 
     override suspend fun saveNews(result: Result) {
         localDataSource.saveCharactersToDB(result)
+    }
+
+    override suspend fun deleteCharacters(result: Result) {
+        localDataSource.deleteCharacter(result)
+    }
+
+    override fun getSavedNews(): Flow<List<Result>> {
+        return localDataSource.getSavedCharacters()
     }
 
 
