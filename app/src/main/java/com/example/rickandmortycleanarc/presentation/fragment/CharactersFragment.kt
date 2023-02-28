@@ -7,6 +7,7 @@ import android.view.*
 import android.view.MenuItem.OnActionExpandListener
 import android.widget.Button
 import android.widget.SearchView
+import android.widget.Toast
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -22,6 +23,7 @@ import com.example.rickandmortycleanarc.presentation.adapter.CharactersAdapter
 import com.example.rickandmortycleanarc.presentation.viewModel.CharacterViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import es.dmoral.toasty.Toasty
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -70,7 +72,8 @@ class CharactersFragment : Fragment(), CharactersAdapter.AdapterCallbacks {
                 val searchView: SearchView = menuItem.actionView as SearchView
                 searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                     override fun onQueryTextSubmit(query: String?): Boolean {
-                        TODO("Not yet implemented")
+                        characterViewModel.getSearchedCharacters(query)
+                        return true
                     }
 
                     override fun onQueryTextChange(newText: String?): Boolean {
@@ -101,12 +104,12 @@ class CharactersFragment : Fragment(), CharactersAdapter.AdapterCallbacks {
 
     override fun onClickSaveButton(result: Result) {
         characterViewModel.saveCharacters(result)
-        view?.let { Snackbar.make(it, "Saved successfully", Snackbar.LENGTH_LONG).show() }
+        Toasty.success(requireActivity(),"Saved successfully",Toast.LENGTH_SHORT).show()
     }
 
     override fun onClickDeleteButton(result: Result) {
         characterViewModel.deletCharacterUseCase(result)
-        view?.let { Snackbar.make(it, "Deleted successfully", Snackbar.LENGTH_LONG).show() }
+        Toasty.error(requireActivity(),"Deleted successfully",Toast.LENGTH_SHORT).show()
     }
 
     override fun visibilitySaveButton(saveButton: Button) {

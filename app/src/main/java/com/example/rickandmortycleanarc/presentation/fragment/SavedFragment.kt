@@ -1,9 +1,11 @@
 package com.example.rickandmortycleanarc.presentation.fragment
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.*
 import android.widget.Button
 import android.widget.SearchView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
@@ -19,6 +21,7 @@ import com.example.rickandmortycleanarc.presentation.adapter.CharactersAdapter
 import com.example.rickandmortycleanarc.presentation.viewModel.CharacterViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import es.dmoral.toasty.Toasty
 
 @AndroidEntryPoint
 class SavedFragment : Fragment(), CharactersAdapter.AdapterCallbacks {
@@ -63,14 +66,14 @@ class SavedFragment : Fragment(), CharactersAdapter.AdapterCallbacks {
                 val searchView: SearchView = menuItem.actionView as SearchView
                 searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                     override fun onQueryTextSubmit(query: String?): Boolean {
-                        TODO("Not yet implemented")
+                        characterViewModel.getSearchedCharacters(query)
+                        return true
                     }
 
                     override fun onQueryTextChange(newText: String?): Boolean {
                         characterViewModel.getSearchedCharacters(newText)
                         return true
                     }
-
                 })
             }
 
@@ -86,6 +89,18 @@ class SavedFragment : Fragment(), CharactersAdapter.AdapterCallbacks {
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
+    private fun setAlertDialog(result: Result) {
+        val builder = AlertDialog.Builder(requireActivity())
+        builder.setTitle("Delete")
+        builder.setMessage("Do you want to delete?")
+        builder.setPositiveButton("Yes") { dialog, which ->
+            characterViewModel.deletCharacterUseCase(result)
+            Toasty.error(requireActivity(),"Deleted successfully",Toast.LENGTH_SHORT).show()
+        }
+        builder.setNegativeButton("No") { dialog, which -> }
+        builder.show()
+    }
+
     override fun handleCharacterId(characterId: Int) {
         findNavController().navigate(R.id.action_mainFragment_to_infoFragment, Bundle().apply {
             putInt("characterId", characterId)
@@ -94,12 +109,11 @@ class SavedFragment : Fragment(), CharactersAdapter.AdapterCallbacks {
 
     override fun onClickSaveButton(result: Result) {
         characterViewModel.saveCharacters(result)
-        view?.let { Snackbar.make(it, "Saved successfully", Snackbar.LENGTH_LONG).show() }
+        Toasty.success(requireActivity(),"Saved successfully",Toast.LENGTH_SHORT).show()
     }
 
     override fun onClickDeleteButton(result: Result) {
-        characterViewModel.deletCharacterUseCase(result)
-        view?.let { Snackbar.make(it, "Deleted successfully", Snackbar.LENGTH_LONG).show() }
+        setAlertDialog(result)
     }
 
     override fun visibilitySaveButton(saveButton: Button) {
